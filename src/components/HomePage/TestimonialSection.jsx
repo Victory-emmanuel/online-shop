@@ -93,7 +93,7 @@ const TestimonialSection = () => {
                 <Typography variant="h6" className="mb-1 text-accent">
                   {testimonials[currentIndex].name}
                 </Typography>
-                <Typography className="text-secondary">
+                <Typography className="">
                   {testimonials[currentIndex].role}
                 </Typography>
               </div>

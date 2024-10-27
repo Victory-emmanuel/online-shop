@@ -32,7 +32,7 @@ const FooterSection = () => {
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
             <img
               src="/path-to-your-logo.png"
-              alt="Company Logo"
+              alt="Brand Logo"
               className="h-12 mb-4"
             />
             <Typography className="mb-4">

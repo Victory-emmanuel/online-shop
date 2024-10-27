@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
@@ -18,11 +17,25 @@ import {
   Button,
 } from "@material-tailwind/react";
 
+// Hook to detect if screen size is large
+const useIsLargeScreen = () => {
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1000);
+
+  useEffect(() => {
+    const handleResize = () => setIsLargeScreen(window.innerWidth >= 1000);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return isLargeScreen;
+};
+
 const ServiceCard = ({ title, description, onLearnMore, image }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-100, 100], [30, -30]);
   const rotateY = useTransform(x, [-100, 100], [-30, 30]);
+  const isLargeScreen = useIsLargeScreen(); // Get screen size
 
   return (
     <motion.div
@@ -31,33 +44,33 @@ const ServiceCard = ({ title, description, onLearnMore, image }) => {
       whileInView={{ opacity: 1 }}
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.5 }}
-      drag
+      drag={isLargeScreen} // Apply drag only on large screens
       dragElastic={0.16}
       dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
       whileTap={{ cursor: "grabbing" }}
       className="cursor-grab"
     >
       <Card className="w-full h-full bg-primary hover:bg-accent group duration-1000">
-        <CardBody className="">
+        <CardBody>
           <Typography
             variant="h5"
             className="mb-2 xx:text-lg ss:text-2xl text-accent group-hover:text-primary"
           >
             {title}
           </Typography>
-          <Typography className="mb-4 xx:text-base ss:text-xl  text-secondary group-hover:text-primary ">
+          <Typography className="mb-4 xx:text-base ss:text-xl text-secondary group-hover:text-primary">
             {description}
           </Typography>
           <img
             src={image}
             alt={title}
-            className="w-[40rem] h-[20rem] rounded-lg object-cover "
+            className="w-[40rem] h-[20rem] rounded-lg object-cover"
           />
         </CardBody>
-        <CardFooter className="pt-0  text-secondary group-hover:text-primary">
+        <CardFooter className="pt-0 text-secondary group-hover:text-primary">
           <Typography
             variant="small"
-            className="cursor-pointer font-medium border-b-2 hover:border-t-2 hover:border-b-0 duration-100 border-secondary group-hover:border-primary   py-2 inline-block"
+            className="cursor-pointer font-medium border-b-2 hover:border-t-2 hover:border-b-0 duration-100 border-secondary group-hover:border-primary py-2 inline-block"
             onClick={onLearnMore}
           >
             Learn More
